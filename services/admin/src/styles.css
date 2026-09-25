@@ -1,2 +1,5 @@
 @import "tailwindcss";
-@import "./theme.css";
+@import "./theme/tokens.css";
+/* Themes; the active one is data-theme on <html> in index.html. */
+@import "./theme/clean.css";
+@import "./theme/retro.css";

@@ -37,8 +37,8 @@ function RootLayout() {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="w-56 shrink-0 border-r border-border bg-card">
-        <div className="px-5 py-4 text-lg font-semibold text-foreground">Game Admin</div>
+      <aside className="w-56 shrink-0 border-r-(length:--border-width) bg-card">
+        <div className="px-5 py-4 font-display text-lg font-semibold text-foreground">Game Admin</div>
         <nav aria-label="Main">
           <ul className="space-y-1 px-3">
             {navItems.map((item) => (
@@ -56,7 +56,7 @@ function RootLayout() {
         </nav>
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-end gap-3 border-b border-border bg-card px-6 py-3 text-sm">
+        <header className="flex items-center justify-end gap-3 border-b-(length:--border-width) bg-card px-6 py-3 text-sm">
           <span>
             <span className="sr-only">Signed in as </span>
             {user.email}

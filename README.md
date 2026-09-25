@@ -40,7 +40,12 @@ worker/
   http/           shared plumbing: middleware (auth, roles, CSRF), validation, gameCall
 ```
 
-**Theme.** `src/theme.css` is the one place that decides how the dashboard looks. It defines semantic tokens (`background`, `card`, `muted`, `foreground`, `border`, `input`, `primary`, `destructive`, `success`, item rarities and `--radius`) that Tailwind turns into utilities such as `bg-card` and `text-muted-foreground`. Components use only those, never raw palette colors like `bg-white` or `text-slate-500`. The names follow shadcn/ui, so its components drop in unchanged. A second theme, such as dark mode, is one extra block overriding the same variables.
+**Themes.** The look is set in `services/admin/src/theme/`, and the active theme is `data-theme` on `<html>` in `index.html` (currently `retro`):
+- `tokens.css` maps the theme variables to Tailwind utilities: colors (`bg-card`, `text-muted-foreground`, `bg-primary`, `text-rarity-epic`, …), fonts (`font-display`, `font-mono`), shape (`rounded-*`, `rounded-pill`, `border-frame`) and depth (`shadow-panel`, `shadow-control`, `press`). You don't edit it to restyle.
+- `clean.css` is a light theme with a system font. It's also the fallback when `data-theme` is missing.
+- `retro.css` is a pixel-art game theme: the Sweetie 16 palette, Press Start 2P and VT323 fonts (self-hosted via @fontsource), square corners, hard pixel shadows and CRT scanlines.
+
+Components use only the semantic utilities, never raw values like `bg-white` or `text-slate-500`. A new theme is one more file setting the same variables. Custom utilities also need registering in `cn()` (`src/lib/utils.ts`) so tailwind-merge doesn't drop them.
 
 To add an endpoint group, write `routes/<area>.ts` exporting `<area>Routes(deps)`, then mount it in `app.ts`. Each module's doc comment lists its routes.
 

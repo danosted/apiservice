@@ -1,0 +1,85 @@
+/*
+ * Retro theme: 8/16-bit game UI.
+ * Palette: "Sweetie 16" by GrafxKid (a popular pixel-art palette), dark mode.
+ * Fonts (self-hosted via @fontsource, no CDN):
+ *   Press Start 2P  headings, the classic arcade font
+ *   VT323           body text, a readable terminal font
+ * Square corners, 2px outlines, hard pixel drop shadows, buttons that press in,
+ * and faint CRT scanlines.
+ */
+@import "@fontsource/press-start-2p/400.css";
+@import "@fontsource/vt323/400.css";
+
+[data-theme="retro"] {
+  /* Type */
+  --font-body: "VT323", ui-monospace, monospace;
+  --font-heading: "Press Start 2P", "VT323", ui-monospace, monospace;
+  --font-code: var(--font-body);
+
+  /* Surfaces */
+  --background: #1a1c2c;
+  --card: #262b44;
+  --muted: #333c57;
+
+  /* Text */
+  --foreground: #f4f4f4;
+  --muted-foreground: #94b0c2;
+
+  /* Lines */
+  --border: #566c86;
+  --input: #94b0c2;
+  --ring: #ffcd75;
+
+  /* Actions */
+  --primary: #38b764;
+  --primary-foreground: #1a1c2c;
+  --destructive: #b13e53;
+  --destructive-foreground: #f4f4f4;
+
+  /* Status */
+  --success: #a7f070;
+
+  /* Item rarity, like loot colors */
+  --rarity-common: #94b0c2;
+  --rarity-uncommon: #a7f070;
+  --rarity-rare: #41a6f6;
+  --rarity-epic: #c77dff;
+  --rarity-legendary: #ffcd75;
+
+  /* Shape and depth */
+  --radius: 0px;
+  --pill-radius: 0px;
+  --border-width: 2px;
+  --panel-shadow: 4px 4px 0 0 #0b0c14;
+  --control-shadow: 3px 3px 0 0 #0b0c14;
+  --press-offset: 3px;
+
+  /* Type scale: VT323 needs larger sizes to read well, while the wide
+     Press Start 2P headings (text-base/lg/2xl) need smaller ones. */
+  --text-xs: 1.05rem;
+  --text-sm: 1.3rem;
+  --text-base: 0.8rem;
+  --text-lg: 0.95rem;
+  --text-2xl: 1.25rem;
+  --text-3xl: 2.75rem;
+  --text-xs--line-height: 1.15;
+  --text-sm--line-height: 1.15;
+
+  /* Both fonts ship one weight; don't let the browser smear a fake bold. */
+  font-synthesis: none;
+}
+
+[data-theme="retro"] ::selection {
+  background: #ffcd75;
+  color: #1a1c2c;
+}
+
+/* CRT scanlines over the whole screen; purely visual, never blocks clicks. */
+[data-theme="retro"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.12) 0 1px, transparent 1px 3px);
+}

@@ -1,0 +1,77 @@
+/*
+ * Theme wiring: maps the variables every theme defines (see clean.css, retro.css)
+ * to Tailwind utilities. You don't edit this to restyle; edit or add a theme file.
+ *
+ * Components only use these semantic utilities, never raw palette values:
+ *   colors   bg-background bg-card bg-muted text-foreground text-muted-foreground
+ *            border-border border-input bg-primary text-primary-foreground
+ *            bg-destructive text-destructive text-success bg-rarity-epic/15 ...
+ *   fonts    font-sans (body), font-display (headings), font-mono (ids, codes)
+ *   shape    rounded-sm/md/lg/xl (from --radius), rounded-pill, border-frame
+ *   depth    shadow-panel, shadow-control, press (button "push" on click)
+ *
+ * The active theme is the data-theme attribute on <html> in index.html.
+ * `inline` makes utilities reference the variables, so switching themes at
+ * runtime (changing data-theme) restyles everything.
+ */
+
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-display: var(--font-heading);
+  --font-mono: var(--font-code);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-rarity-common: var(--rarity-common);
+  --color-rarity-uncommon: var(--rarity-uncommon);
+  --color-rarity-rare: var(--rarity-rare);
+  --color-rarity-epic: var(--rarity-epic);
+  --color-rarity-legendary: var(--rarity-legendary);
+
+  --radius-sm: max(0px, calc(var(--radius) - 0.25rem));
+  --radius-md: max(0px, calc(var(--radius) - 0.125rem));
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-pill: var(--pill-radius);
+
+  --shadow-panel: var(--panel-shadow);
+  --shadow-control: var(--control-shadow);
+}
+
+/* Outline width set by the theme (1px clean, 2px retro). */
+@utility border-frame {
+  border-style: solid;
+  border-width: var(--border-width);
+}
+
+/* Buttons sink into their shadow while pressed (no visible offset when --press-offset is 0). */
+@utility press {
+  transition-property: transform, box-shadow, background-color, color;
+  transition-duration: 75ms;
+  &:active:not(:disabled) {
+    transform: translate(var(--press-offset), var(--press-offset));
+    box-shadow: none;
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+  }
+}

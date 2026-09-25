@@ -2,14 +2,14 @@ import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
 // Small shadcn-style primitives: plain elements plus Tailwind classes, owned by this repo.
-// Colors come only from the semantic tokens in src/theme.css.
+// Colors, fonts, borders and shadows come only from the theme tokens (src/theme/tokens.css).
 
 type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
 const buttonVariants: Record<ButtonVariant, string> = {
   primary: "bg-primary text-primary-foreground hover:bg-primary/85",
-  secondary: "border border-input bg-card text-foreground hover:bg-muted",
+  secondary: "border-frame border-input bg-card text-foreground hover:bg-muted",
   danger: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-  ghost: "text-foreground hover:bg-muted",
+  ghost: "text-foreground shadow-none hover:bg-muted",
 };
 
 export function Button({
@@ -20,7 +20,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex h-9 items-center justify-center gap-2 rounded-md px-4 text-sm font-medium transition-colors",
+        "press inline-flex h-9 items-center justify-center gap-2 rounded-md px-4 text-sm font-medium shadow-control",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         "disabled:pointer-events-none disabled:opacity-50",
         buttonVariants[variant],
@@ -32,7 +32,7 @@ export function Button({
 }
 
 const fieldClass =
-  "h-9 w-full rounded-md border border-input bg-card px-3 text-sm shadow-xs placeholder:text-muted-foreground/70 focus-visible:outline-2 focus-visible:outline-ring aria-invalid:border-destructive";
+  "h-9 w-full rounded-md border-frame border-input bg-card px-3 text-sm shadow-control placeholder:text-muted-foreground/70 focus-visible:outline-2 focus-visible:outline-ring aria-invalid:border-destructive";
 
 export function Input({ className, ...props }: ComponentProps<"input">) {
   return <input className={cn(fieldClass, className)} {...props} />;
@@ -49,11 +49,11 @@ export function Label({ className, ...props }: ComponentProps<"label">) {
 }
 
 export function Card({ className, ...props }: ComponentProps<"section">) {
-  return <section className={cn("rounded-lg border bg-card p-5 shadow-xs", className)} {...props} />;
+  return <section className={cn("rounded-lg border-frame bg-card p-5 shadow-panel", className)} {...props} />;
 }
 
 export function CardTitle({ className, ...props }: ComponentProps<"h2">) {
-  return <h2 className={cn("mb-3 text-base font-semibold text-foreground", className)} {...props} />;
+  return <h2 className={cn("mb-3 font-display text-base font-semibold text-foreground", className)} {...props} />;
 }
 
 // Full class strings (not built from the tone name) so Tailwind can find them.
@@ -71,7 +71,7 @@ export type BadgeTone = keyof typeof badgeTones;
 export function Badge({ tone, className, ...props }: ComponentProps<"span"> & { tone: BadgeTone }) {
   return (
     <span
-      className={cn("inline-flex rounded-full px-2 py-0.5 text-xs font-medium", badgeTones[tone], className)}
+      className={cn("inline-flex rounded-pill px-2 py-0.5 text-xs font-medium", badgeTones[tone], className)}
       {...props}
     />
   );
@@ -79,7 +79,7 @@ export function Badge({ tone, className, ...props }: ComponentProps<"span"> & { 
 
 export function Table({ className, ...props }: ComponentProps<"table">) {
   return (
-    <div className="overflow-x-auto rounded-lg border bg-card">
+    <div className="overflow-x-auto rounded-lg border-frame bg-card shadow-panel">
       <table className={cn("w-full text-left text-sm", className)} {...props} />
     </div>
   );
@@ -112,7 +112,7 @@ export function Alert({
   return (
     <div
       role={tone === "error" ? "alert" : "status"}
-      className={cn("rounded-md border px-4 py-3 text-sm", tones[tone], className)}
+      className={cn("rounded-md border-frame px-4 py-3 text-sm", tones[tone], className)}
       {...props}
     />
   );

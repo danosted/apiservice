@@ -40,7 +40,7 @@ function SignIn() {
                 <li key={key}>
                   <a
                     href={`/__dev/login?${new URLSearchParams({ as: key, next: target })}`}
-                    className="block rounded-md border border-input px-4 py-2 text-sm font-medium hover:bg-muted/60"
+                    className="press block rounded-md border-frame border-input bg-card px-4 py-2 text-sm font-medium shadow-control hover:bg-muted/60"
                   >
                     Sign in as {key}
                   </a>

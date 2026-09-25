@@ -5,7 +5,7 @@ import { Alert } from "./ui";
 export function PageHeader({ title, children }: { title: string; children?: React.ReactNode }) {
   return (
     <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-      <h1 className="text-2xl font-semibold text-foreground">{title}</h1>
+      <h1 className="font-display text-2xl font-semibold text-foreground">{title}</h1>
       {children}
     </div>
   );
@@ -39,7 +39,7 @@ export function Pagination({
 }) {
   const pages = Math.max(1, Math.ceil(total / pageSize));
   const linkClass =
-    "rounded-md border border-input bg-card px-3 py-1.5 text-sm hover:bg-muted/60 aria-disabled:pointer-events-none aria-disabled:opacity-40";
+    "press rounded-md border-frame border-input bg-card px-3 py-1.5 text-sm shadow-control hover:bg-muted/60 aria-disabled:pointer-events-none aria-disabled:opacity-40";
   return (
     <nav aria-label="Pagination" className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
       <span>

@@ -63,7 +63,7 @@ function PlayerPage() {
 
         <div className="space-y-6 lg:col-span-2">
           <section aria-labelledby="inventory-heading">
-            <h2 id="inventory-heading" className="mb-3 text-base font-semibold text-foreground">
+            <h2 id="inventory-heading" className="mb-3 font-display text-base font-semibold text-foreground">
               Inventory
             </h2>
             <Table>
