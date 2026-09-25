@@ -1,0 +1,5 @@
+{
+  "permissions": {
+    "deny": ["Read(.dev.vars)", "Read(.cf.env)", "Read(.env)", "Read(.env.local)", "Read(.cf.env)"]
+  }
+}

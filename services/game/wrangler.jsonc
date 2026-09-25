@@ -1,0 +1,17 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "apiservice-game",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Create with `npx wrangler d1 create game-db`, then paste the id here.
+  // The placeholder id doubles as the local database key, so keep it unique per service.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "game-db",
+      "database_id": "REPLACE_WITH_GAME_DB_ID"
+    }
+  ]
+}

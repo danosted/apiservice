@@ -1,0 +1,10 @@
+{
+  "as": "none",
+  "steps": [
+    { "goto": "/players?page=2" },
+    { "expectText": "choose who to sign in as" },
+    { "click": { "role": "link", "name": "Sign in as viewer" } },
+    { "expectUrl": "/players?page=2" },
+    { "expectText": "viewer@local.test" }
+  ]
+}

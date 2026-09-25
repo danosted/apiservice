@@ -1,0 +1,17 @@
+{
+  "name": "@apiservice/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./authz": "./src/authz.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "^4.13.9",
+    "jose": "^6.2.12"
+  }
+}

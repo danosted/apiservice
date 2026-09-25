@@ -1,0 +1,43 @@
+{
+  "name": "apiservice",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "test": "vitest run",
+    "check": "npm run lint && npm run typecheck && npm test",
+    "start": "bash scripts/start.sh",
+    "stop": "bash scripts/stop.sh",
+    "verify": "bash scripts/verify.sh",
+    "smoke": "bash scripts/smoke.sh",
+    "dev:sandbox": "npm run dev -w services/sandbox",
+    "deploy:sandbox": "npm run deploy -w services/sandbox",
+    "db:migrate:local:sandbox": "npm run db:migrate:local -w services/sandbox",
+    "db:migrate:remote:sandbox": "npm run db:migrate:remote -w services/sandbox",
+    "dev:admin": "npm run dev -w services/admin",
+    "deploy:admin": "npm run deploy -w services/admin",
+    "db:migrate:local:admin": "npm run db:migrate:local -w services/admin",
+    "db:migrate:remote:admin": "npm run db:migrate:remote -w services/admin",
+    "dev:game": "npm run dev -w services/game",
+    "deploy:game": "npm run deploy -w services/game",
+    "db:migrate:local:game": "npm run db:migrate:local -w services/game",
+    "db:migrate:remote:game": "npm run db:migrate:remote -w services/game",
+    "seed": "npm run seed -w services/game",
+    "ui": "node scripts/ui.mjs"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.14",
+    "@cloudflare/workers-types": "^5.0.0",
+    "playwright": "^1.63.0",
+    "typescript": "^5.7.0",
+    "vitest": "^5.0.2",
+    "wrangler": "^4.0.0"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "as": "editor",
+  "steps": [
+    {
+      "goto": "/players"
+    },
+    {
+      "click": {
+        "role": "link",
+        "name": "Next"
+      }
+    },
+    {
+      "expectUrl": "/players?page=2"
+    },
+    {
+      "expectText": "Page 2 of 3"
+    },
+    {
+      "fill": {
+        "label": "Search players",
+        "value": "player-01"
+      }
+    },
+    {
+      "click": {
+        "role": "button",
+        "name": "Search"
+      }
+    },
+    {
+      "expectUrl": "/players?q=player-01&page=1"
+    },
+    {
+      "expectText": "10 total"
+    },
+    {
+      "expectVisible": {
+        "role": "cell",
+        "name": "player-010"
+      }
+    }
+  ]
+}

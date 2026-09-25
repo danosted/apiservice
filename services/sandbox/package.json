@@ -1,0 +1,16 @@
+{
+  "name": "@apiservice/sandbox",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --port 8787 --inspector-port 9229 --persist-to $HOME/.wrangler-state/sandbox",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "db:migrate:local": "wrangler d1 migrations apply apiservice-db --local --persist-to $HOME/.wrangler-state/sandbox",
+    "db:migrate:remote": "wrangler d1 migrations apply apiservice-db --remote"
+  },
+  "dependencies": {
+    "@apiservice/core": "*"
+  }
+}

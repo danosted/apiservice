@@ -1,0 +1,8 @@
+{
+  "as": "viewer",
+  "steps": [
+    { "goto": "/players/player-001" },
+    { "expectText": "You have read-only access" },
+    { "expectVisible": { "role": "cell", "name": "Dragon Blade" } }
+  ]
+}

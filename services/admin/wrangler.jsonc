@@ -1,0 +1,43 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "apiservice-admin",
+  "main": "worker/index.ts",
+  "compatibility_date": "2025-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Static UI from ./dist (built by Vite). Only these paths reach the Worker;
+  // unknown paths fall back to index.html so deep links work.
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*", "/health", "/__dev/*"]
+  },
+
+  // Top level = local dev. Fakes are refused unless ENVIRONMENT is "local",
+  // and the fake identity only answers on localhost.
+  "vars": {
+    "ENVIRONMENT": "local",
+    "IDENTITY": "fake", // fake | access
+    "GAME_BACKEND": "binding", // binding | fake (in-memory seed data, no game service needed)
+    "AUDIT_BACKEND": "d1" // d1 | memory
+  },
+  "d1_databases": [{ "binding": "DB", "database_name": "admin-db", "database_id": "REPLACE_WITH_ADMIN_DB_ID" }],
+  "services": [{ "binding": "GAME", "service": "apiservice-game", "entrypoint": "GameRpc" }],
+
+  "env": {
+    // Deploy with `npm run deploy -w services/admin`, which selects this environment.
+    "production": {
+      "vars": {
+        "ENVIRONMENT": "production",
+        "IDENTITY": "access",
+        "GAME_BACKEND": "binding",
+        "AUDIT_BACKEND": "d1",
+        "ACCESS_TEAM_DOMAIN": "https://REPLACE_WITH_TEAM.cloudflareaccess.com",
+        "ACCESS_AUD": "REPLACE_WITH_ACCESS_APPLICATION_AUD",
+        "EDITOR_EMAILS": "REPLACE_WITH_COMMA_SEPARATED_EDITOR_EMAILS"
+      },
+      "workers_dev": false,
+      "d1_databases": [{ "binding": "DB", "database_name": "admin-db", "database_id": "REPLACE_WITH_ADMIN_DB_ID" }],
+      "services": [{ "binding": "GAME", "service": "apiservice-game", "entrypoint": "GameRpc" }]
+    }
+  }
+}

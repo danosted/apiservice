@@ -1,0 +1,87 @@
+/*
+ * Theme: the one place that decides how the dashboard looks.
+ *
+ * Components only use the semantic utilities generated from these tokens
+ * (bg-card, text-muted-foreground, border-input, bg-primary, text-destructive, ...),
+ * never raw palette colors like bg-white or text-slate-500. Restyling the app means
+ * editing the values below.
+ *
+ * Names follow the shadcn/ui convention, so its components drop in unchanged.
+ * A second theme (e.g. dark) is one more block that overrides the same variables,
+ * such as `[data-theme="dark"] { --background: ...; }`.
+ */
+
+:root {
+  /* Surfaces */
+  --background: oklch(98.4% 0.003 247.858); /* page */
+  --card: oklch(100% 0 0); /* panels, tables, header, sidebar, inputs */
+  --muted: oklch(96.8% 0.007 247.896); /* subtle fills: table headers, hovers, active nav */
+
+  /* Text */
+  --foreground: oklch(20.8% 0.042 265.755);
+  --muted-foreground: oklch(55.4% 0.046 257.417); /* secondary text, labels of values */
+
+  /* Lines */
+  --border: oklch(92.9% 0.013 255.508); /* dividers, card outlines */
+  --input: oklch(86.9% 0.022 252.894); /* form controls, secondary buttons */
+  --ring: oklch(20.8% 0.042 265.755); /* focus outline */
+
+  /* Actions */
+  --primary: oklch(20.8% 0.042 265.755);
+  --primary-foreground: oklch(100% 0 0);
+  --destructive: oklch(57.7% 0.245 27.325);
+  --destructive-foreground: oklch(100% 0 0);
+
+  /* Status (alerts use these at low opacity for fill and border) */
+  --success: oklch(52.7% 0.154 150.069);
+
+  /* Item rarity */
+  --rarity-common: oklch(55.4% 0.046 257.417);
+  --rarity-uncommon: oklch(52.7% 0.154 150.069);
+  --rarity-rare: oklch(54.6% 0.245 262.881);
+  --rarity-epic: oklch(55.8% 0.288 302.321);
+  --rarity-legendary: oklch(66.6% 0.179 58.318);
+
+  /* Shape */
+  --radius: 0.5rem;
+}
+
+/* `inline` makes utilities reference the variables above, so overriding them
+   (e.g. in a dark theme block) restyles everything at runtime. */
+@theme inline {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-rarity-common: var(--rarity-common);
+  --color-rarity-uncommon: var(--rarity-uncommon);
+  --color-rarity-rare: var(--rarity-rare);
+  --color-rarity-epic: var(--rarity-epic);
+  --color-rarity-legendary: var(--rarity-legendary);
+
+  --radius-sm: calc(var(--radius) - 0.25rem);
+  --radius-md: calc(var(--radius) - 0.125rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.25rem);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+}

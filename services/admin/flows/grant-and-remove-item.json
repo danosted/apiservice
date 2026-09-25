@@ -1,0 +1,17 @@
+{
+  "as": "editor",
+  "steps": [
+    { "goto": "/players/player-002" },
+    { "select": { "label": "Item", "option": "Elixir (max 10)" } },
+    { "fill": { "label": "Quantity", "value": "2" } },
+    { "click": { "role": "button", "name": "Apply" } },
+    { "expectText": "Granted 2 × Elixir" },
+    { "expectVisible": { "role": "cell", "name": "Elixir", "exact": true } },
+    { "select": { "label": "Action", "option": "Remove" } },
+    { "click": { "role": "button", "name": "Apply" } },
+    { "expectText": "Removed 2 × Elixir" },
+    { "goto": "/audit" },
+    { "expectVisible": { "role": "cell", "name": "inventory.remove" } },
+    { "expectVisible": { "role": "link", "name": "player-002" } }
+  ]
+}

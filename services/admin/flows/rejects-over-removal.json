@@ -1,0 +1,41 @@
+{
+  "as": "editor",
+  "allowHttp": [422],
+  "steps": [
+    {
+      "goto": "/players/player-001"
+    },
+    {
+      "select": {
+        "label": "Item",
+        "option": "Dragon Blade (max 1)"
+      }
+    },
+    {
+      "fill": {
+        "label": "Quantity",
+        "value": "5"
+      }
+    },
+    {
+      "select": {
+        "label": "Action",
+        "option": "Remove"
+      }
+    },
+    {
+      "click": {
+        "role": "button",
+        "name": "Apply"
+      }
+    },
+    {
+      "expectVisible": {
+        "role": "alert"
+      }
+    },
+    {
+      "expectText": "cannot remove 5; player has 1"
+    }
+  ]
+}

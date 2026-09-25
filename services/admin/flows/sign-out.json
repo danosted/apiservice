@@ -1,0 +1,24 @@
+{
+  "as": "editor",
+  "allowHttp": [401],
+  "steps": [
+    {
+      "goto": "/players"
+    },
+    {
+      "click": {
+        "role": "link",
+        "name": "Sign out"
+      }
+    },
+    {
+      "expectText": "choose who to sign in as"
+    },
+    {
+      "goto": "/players"
+    },
+    {
+      "expectText": "choose who to sign in as"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "cloudflare-workers-api",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:26-bookworm",
+
+  "postCreateCommand": "npm install && npx playwright install --with-deps chromium",
+
+  "forwardPorts": [8787, 8788, 8789],
+  "portsAttributes": {
+    "8787": { "label": "sandbox service", "onAutoForward": "notify" },
+    "8788": { "label": "admin dashboard", "onAutoForward": "notify" },
+    "8789": { "label": "game service", "onAutoForward": "notify" }
+  },
+
+  "remoteEnv": {
+    // Wrangler dev server binds to loopback by default; the devcontainer
+    // port-forwarding above is what actually exposes the service ports to the host.
+    "WRANGLER_SEND_METRICS": "false"
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "anthropic.claude-code"],
+      "settings": {
+        "editor.formatOnSave": true
+      }
+    }
+  }
+}

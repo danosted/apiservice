@@ -1,0 +1,7 @@
+# Copy this file to .dev.vars for local `wrangler dev` (never commit .dev.vars).
+# .dev.vars is git-ignored and should be blocked from Claude Code reads
+# (see .claude/settings.json) so local secrets never leak into agent context.
+
+# Bearer token this service requires on incoming requests. Use a different value per service:
+#   openssl rand -hex 32
+API_BEARER_TOKEN=changeme

@@ -1,0 +1,6 @@
+# Copy to .dev.vars for local `wrangler dev` (never commit .dev.vars).
+# In production set it with `npx wrangler secret put API_BEARER_TOKEN`.
+
+# Bearer token this service requires on incoming requests. Use a different value per service:
+#   openssl rand -hex 32
+API_BEARER_TOKEN=changeme
