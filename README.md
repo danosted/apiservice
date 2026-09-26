@@ -129,18 +129,28 @@ npm run ui -- flows                             # every services/admin/flows/*.j
 
 Flows are JSON step lists (`goto`, `click`, `fill`, `select`, `expectText`, …; see the top of `scripts/ui.mjs`). They find elements by accessible role and label, so good accessibility doubles as the test hooks.
 
-## Deploying a service
+## Deploying
 
-```
-set -a; . ./.cf.env; set +a                 # CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID
-cd services/<name>
-npx wrangler d1 create <db-name>            # paste the id into wrangler.jsonc
-npm run db:migrate:remote
-npx wrangler secret put API_BEARER_TOKEN    # sandbox/game; run it yourself and type the value at the prompt
-npm run deploy
-```
+GitHub Actions (`.github/workflows/ci.yml`) runs `npm run check` and `npm run smoke` on every pull request and push. On a push to `main` it then deploys:
 
-For the admin dashboard, first create a Cloudflare Access application for its hostname. Then fill in `ACCESS_TEAM_DOMAIN`, `ACCESS_AUD` and `EDITOR_EMAILS` under `env.production` in `services/admin/wrangler.jsonc`. `npm run deploy` builds and deploys that environment, with `workers_dev` off so Access can't be bypassed through a `*.workers.dev` URL. Deploy the game service first, since the admin dashboard binds to it.
+| Service | Hostname | How it's reached |
+|---|---|---|
+| game | `game.mikkelsted.dk` | the external game server, with a bearer token |
+| admin | `admin.mikkelsted.dk` | a browser, behind Cloudflare Access |
+| sandbox | not deployed | local only |
+
+Each deploy runs the service's remote D1 migrations, then `wrangler deploy`. Game goes first, because admin binds to it. The hostnames are Custom Domains (`routes` in each `wrangler.jsonc`), so Cloudflare creates the DNS records and certificates. `workers_dev` is off, so there are no `*.workers.dev` URLs. Migrations go live before the code that uses them, so they must keep working with the version that's still running: add columns and tables, and drop them in a later release. To undo a bad deploy, run `npx wrangler rollback` in the service's folder.
+
+### One-time setup
+
+1. **API token.** In the Cloudflare dashboard, create an API token from the "Edit Cloudflare Workers" template, add Account → D1 → Edit, and limit it to your account and the `mikkelsted.dk` zone. Add it and your account id as the GitHub repo secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
+2. **Databases.** With your credentials loaded (`set -a; . ./.cf.env; set +a`):
+   - `npx wrangler d1 create game-db`, then paste the id into `services/game/wrangler.jsonc`. The id is also the local database key, so reset local data afterwards with `npm run db:migrate:local:game && npm run seed`.
+   - `npx wrangler d1 create admin-db`, then paste the id into `env.production` in `services/admin/wrangler.jsonc` only. Leave the top-level placeholder, since that one is the local key.
+3. **Game token.** In `services/game`, run `npx wrangler secret put API_BEARER_TOKEN` yourself and type the value at the prompt. If the Worker doesn't exist yet, wrangler offers to create it.
+4. **Access.** Create a Cloudflare Access application for `admin.mikkelsted.dk`. Then fill in `ACCESS_TEAM_DOMAIN`, `ACCESS_AUD` and `EDITOR_EMAILS` under `env.production` in `services/admin/wrangler.jsonc`. Until that's done, admin refuses requests, because it can't verify the Access JWT.
+
+Commit the ids and Access settings (none of them are secrets) and push to `main`.
 
 ## Adding a service
 

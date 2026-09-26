@@ -31,12 +31,15 @@
         "IDENTITY": "access",
         "GAME_BACKEND": "binding",
         "AUDIT_BACKEND": "d1",
-        "ACCESS_TEAM_DOMAIN": "https://REPLACE_WITH_TEAM.cloudflareaccess.com",
-        "ACCESS_AUD": "REPLACE_WITH_ACCESS_APPLICATION_AUD",
-        "EDITOR_EMAILS": "REPLACE_WITH_COMMA_SEPARATED_EDITOR_EMAILS"
+        "ACCESS_TEAM_DOMAIN": "https://mikkelsted.cloudflareaccess.com",
+        "ACCESS_AUD": "5fc76cf965d9913ca9acbc213f63d1c0c966381fb2d4dc059fd920c85e9bba61",
+        "EDITOR_EMAILS": "danosted@gmail.com"
       },
+      "routes": [{ "pattern": "admin.mikkelsted.dk", "custom_domain": true }],
       "workers_dev": false,
-      "d1_databases": [{ "binding": "DB", "database_name": "admin-db", "database_id": "REPLACE_WITH_ADMIN_DB_ID" }],
+      "d1_databases": [
+        { "binding": "DB", "database_name": "admin-db", "database_id": "6a9f75a5-8c83-4120-8a4b-4eb7e14a23f1" }
+      ],
       "services": [{ "binding": "GAME", "service": "apiservice-game", "entrypoint": "GameRpc" }]
     }
   }

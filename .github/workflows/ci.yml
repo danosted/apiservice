@@ -1,0 +1,53 @@
+# Pull requests: lint, typecheck, unit tests and the local smoke run.
+# Pushes to main: the same checks, then deploy game and admin to Cloudflare.
+#
+# Needs repo secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID (see README, "Deploying").
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npx playwright install --with-deps chromium
+      - run: npm run smoke
+
+  deploy:
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    # One deploy at a time; a newer push waits rather than racing the migrations.
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+      - run: npm ci
+
+      # Game first: admin binds to it. Migrations run before the code that needs them,
+      # so each one must keep working with the version that's still live.
+      - run: npm run db:migrate:remote:game
+      - run: npm run deploy:game
+      - name: game health check
+        run: curl -fsS --retry 5 --retry-delay 5 --retry-all-errors https://game.mikkelsted.dk/health
+
+      - run: npm run db:migrate:remote:admin
+      - run: npm run deploy:admin

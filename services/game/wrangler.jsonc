@@ -5,13 +5,17 @@
   "compatibility_date": "2025-01-01",
   "compatibility_flags": ["nodejs_compat"],
 
-  // Create with `npx wrangler d1 create game-db`, then paste the id here.
-  // The placeholder id doubles as the local database key, so keep it unique per service.
+  // Public hostname for the external game server. Cloudflare creates the DNS record and
+  // certificate on deploy. Other Workers reach this one through service bindings instead.
+  "routes": [{ "pattern": "game.mikkelsted.dk", "custom_domain": true }],
+  "workers_dev": false,
+
+  // The remote game-db. The id doubles as the local database key, so keep it unique per service.
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "game-db",
-      "database_id": "REPLACE_WITH_GAME_DB_ID"
+      "database_id": "0a519fbb-a0fa-4fe8-ac80-ae6fa18f6d62"
     }
   ]
 }
