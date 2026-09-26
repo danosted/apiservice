@@ -42,13 +42,6 @@ jobs:
           cache: npm
       - run: npm ci
 
-      # TEMPORARY: compare the secrets with .cf.env without revealing them. Remove once deploys work.
-      - name: credential fingerprints
-        run: |
-          echo "account id: len=${#CLOUDFLARE_ACCOUNT_ID} sha=$(printf %s "$CLOUDFLARE_ACCOUNT_ID" | sha256sum | cut -c1-8)"
-          echo "token:      len=${#CLOUDFLARE_API_TOKEN} sha=$(printf %s "$CLOUDFLARE_API_TOKEN" | sha256sum | cut -c1-8)"
-          npx wrangler whoami
-
       # Game first: admin binds to it. Migrations run before the code that needs them,
       # so each one must keep working with the version that's still live.
       - run: npm run db:migrate:remote:game

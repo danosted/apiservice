@@ -143,14 +143,23 @@ Each deploy runs the service's remote D1 migrations, then `wrangler deploy`. Gam
 
 ### One-time setup
 
-1. **API token.** In the Cloudflare dashboard, create an API token from the "Edit Cloudflare Workers" template, add Account → D1 → Edit, and limit it to your account and the `mikkelsted.dk` zone. Add it and your account id as the GitHub repo secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
+This is done for the current deployment; it's kept here for rebuilding it.
+
+1. **API tokens.** CI and your local `.cf.env` use separate tokens with the same permissions: the "Edit Cloudflare Workers" template plus Account → D1 → Edit and Zone → DNS → Edit, limited to your account and the `mikkelsted.dk` zone. The local token can have an IP filter. The CI token can't, because GitHub's runners use changing Azure IPs. If the form demands a filter, use "Is not in" `192.0.2.1`. Store the CI token and the account id as the GitHub repo secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` (`gh secret set <name>` prompts for the value).
 2. **Databases.** With your credentials loaded (`set -a; . ./.cf.env; set +a`):
    - `npx wrangler d1 create game-db`, then paste the id into `services/game/wrangler.jsonc`. The id is also the local database key, so reset local data afterwards with `npm run db:migrate:local:game && npm run seed`.
    - `npx wrangler d1 create admin-db`, then paste the id into `env.production` in `services/admin/wrangler.jsonc` only. Leave the top-level placeholder, since that one is the local key.
 3. **Game token.** In `services/game`, run `npx wrangler secret put API_BEARER_TOKEN` yourself and type the value at the prompt. If the Worker doesn't exist yet, wrangler offers to create it.
 4. **Access.** Create a Cloudflare Access application for `admin.mikkelsted.dk`. Then fill in `ACCESS_TEAM_DOMAIN`, `ACCESS_AUD` and `EDITOR_EMAILS` under `env.production` in `services/admin/wrangler.jsonc`. Until that's done, admin refuses requests, because it can't verify the Access JWT.
 
+5. **Bot Fight Mode off** (mikkelsted.dk → Security → Settings). It blocks datacenter IPs, which includes GitHub's runners and the external game server, and the free plan can't exempt a single hostname. Both hostnames require credentials anyway.
+
 Commit the ids and Access settings (none of them are secrets) and push to `main`.
+
+### Gotchas
+
+- **Executable scripts.** The repo lives on a Windows mount with `core.fileMode=false`, so new shell scripts are committed without the executable bit and fail on Linux runners with "Permission denied". Run `git update-index --chmod=+x <file>` for any script that's run directly, not sourced.
+- **Misleading errors.** An IP-filtered token makes wrangler report `7403 The given account is not valid`; `npx wrangler whoami` shows the real reason (`9109 Cannot use the access token from location`).
 
 ## Adding a service
 
